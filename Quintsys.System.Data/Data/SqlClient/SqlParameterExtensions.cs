@@ -24,6 +24,8 @@ namespace Quintsys.System.Data.SqlClient
         private static string FormatParameterValue(SqlParameter parameter)
         {
             string parameterValue;
+
+            // ReSharper disable once SwitchStatementMissingSomeCases
             switch (parameter.SqlDbType)
             {
                 case SqlDbType.Char:
@@ -43,24 +45,6 @@ namespace Quintsys.System.Data.SqlClient
                 case SqlDbType.Bit:
                     parameterValue = ((bool)parameter.Value) ? "1" : "0";
                     break;
-                case SqlDbType.BigInt:
-                case SqlDbType.Binary:
-                case SqlDbType.Decimal:
-                case SqlDbType.Float:
-                case SqlDbType.Image:
-                case SqlDbType.Int:
-                case SqlDbType.Money:
-                case SqlDbType.Real:
-                case SqlDbType.UniqueIdentifier:
-                case SqlDbType.SmallDateTime:
-                case SqlDbType.SmallInt:
-                case SqlDbType.SmallMoney:
-                case SqlDbType.Timestamp:
-                case SqlDbType.TinyInt:
-                case SqlDbType.VarBinary:
-                case SqlDbType.Variant:
-                case SqlDbType.Udt:
-                case SqlDbType.Structured:
                 default:
                     parameterValue = parameter.Value.ToString();
                     break;
