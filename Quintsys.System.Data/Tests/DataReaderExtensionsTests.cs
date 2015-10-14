@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using Moq;
 using NUnit.Framework;
 using Quintsys.System.Data;
@@ -55,6 +56,18 @@ namespace Tests
 
             Assert.NotNull(value);
             Assert.AreEqual(expected: 1, actual: value);
+        }
+
+        [Test]
+        public void Should_Raise_If_Getting_Single_Value_From_Multiple_Results_DataReader()
+        {
+            Mock<IDataReader> moq = new Mock<IDataReader>();
+            moq.Setup(x => x["columnName"]).Returns(1);
+            moq.Setup(x => x.Read()).Returns(() => true); // simulates infinite records
+            IDataReader dataReader = moq.Object;
+
+            InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => dataReader.Single(dr => dr.ColumnValue<int>("columnName")));
+            Assert.That(actual: ex.Message, expression: Is.EqualTo("Multiple rows returned!"));
         }
     }
 }
